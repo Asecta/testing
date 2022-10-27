@@ -1,12 +1,12 @@
-import os
+import subprocess
+import re
 
-with open("document1") as f:
+with open("document1-1") as f:
     data = f.read()
 
-stream = os.popen("git tag")
-while True:
-    line = stream.readline()
-    if not line: break
-    print(line)
+proc = subprocess.run(['git', 'describe', '--tags'], stdout=subprocess.PIPE)
+proc_out = proc.stdout.decode('utf-8')
+tag = re.sub('[\\r\\n]', '', proc_out)
 
-print(data)
+print(f"Tag: '{tag}'")
+print(f"Data: '{data}'")
